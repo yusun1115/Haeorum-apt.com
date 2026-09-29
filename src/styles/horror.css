@@ -1,0 +1,96 @@
+.horror-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(78, 74, 74, 0.09) 0 1px, transparent 1px 4px),
+    linear-gradient(90deg, rgba(115, 0, 0, 0.05), transparent 45%, rgba(0, 15, 35, 0.09));
+  mix-blend-mode: multiply;
+}
+
+.horror-layer--low {
+  opacity: 0.18;
+}
+
+.horror-layer--medium {
+  opacity: 0.28;
+  animation: scan-drift 7s steps(2, end) infinite;
+}
+
+.horror-layer--high {
+  opacity: 0.4;
+  animation: scan-drift 3.8s steps(2, end) infinite;
+}
+
+.site-content--unstable {
+  background-color: #eee9dc;
+}
+
+.site-content--critical {
+  color: #372b2b;
+}
+
+.site-content--critical h1,
+.site-content--critical h2,
+.site-content--critical h3 {
+  color: #522f34;
+}
+
+.event-flicker {
+  animation: event-flicker 0.55s steps(2, end) 2;
+}
+
+.counter-haunt {
+  animation: counter-haunt 1.2s steps(2, end) 2;
+}
+
+.cursor-haunt,
+.cursor-haunt * {
+  cursor: crosshair !important;
+}
+
+@keyframes scan-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(1px);
+  }
+}
+
+@keyframes event-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.45;
+  }
+  70% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes counter-haunt {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .horror-layer,
+  .event-flicker,
+  .counter-haunt {
+    animation: none;
+  }
+}
