@@ -18,11 +18,19 @@ export const DEFAULT_FLAGS = {
   newAdmin: false,
   exitFound: false,
   criticalDeletion: false,
+  ghostPopupClosed: false,
+  ghostPopupReappeared: false,
+  externalPostPreserved: false,
+  externalPostBlocked: false,
+  watch666Recovered: false,
+  fakeBsodSeen: false,
+  fakeRedScreenSeen: false,
+  popupCascadeSeen: false,
 };
 
 export function createInitialState() {
   return {
-    version: 1,
+    version: 2,
     started: false,
     playerName: '',
     currentPage: 'home',
@@ -34,12 +42,24 @@ export function createInitialState() {
     visitorCount: 0,
     recordRecovery: 0,
     recognitionLevel: 0,
+    intrusionLevel: 0,
+    fearStage: 0,
+    activeScreenEvent: null,
     inspection: false,
     logOpen: false,
     muted: false,
+    effectsReduced: false,
     ending: null,
     revealedClues: [],
     triggeredEvents: [],
+    eventLog: [],
+    postStates: {},
+    boardFilter: 'all',
+    boardSort: 'newest',
+    refreshStreak: 0,
+    lastRefreshPage: '',
+    watchRecoveryStreak: 0,
+    lastSafePage: 'home',
     logs: [
       { time: '00:13', text: '유지보수 세션이 시작되었습니다.' },
     ],
@@ -57,16 +77,29 @@ function mergeState(raw) {
     completedTickets: Array.isArray(raw?.completedTickets) ? raw.completedTickets : [],
     revealedClues: Array.isArray(raw?.revealedClues) ? raw.revealedClues : [],
     triggeredEvents: Array.isArray(raw?.triggeredEvents) ? raw.triggeredEvents : [],
+    eventLog: Array.isArray(raw?.eventLog) ? raw.eventLog : [],
+    postStates: raw?.postStates && typeof raw.postStates === 'object' ? raw.postStates : {},
     history: Array.isArray(raw?.history) ? raw.history : [],
     forward: Array.isArray(raw?.forward) ? raw.forward : [],
   };
 
   if (typeof merged.playerName !== 'string') merged.playerName = '';
+  merged.effectsReduced = Boolean(merged.effectsReduced);
   if (!Number.isFinite(merged.currentTimeMinutes)) merged.currentTimeMinutes = 13;
   if (!Number.isFinite(merged.siteIntegrity)) merged.siteIntegrity = 100;
   if (!Number.isFinite(merged.visitorCount)) merged.visitorCount = 0;
   if (!Number.isFinite(merged.recordRecovery)) merged.recordRecovery = 0;
   if (!Number.isFinite(merged.recognitionLevel)) merged.recognitionLevel = 0;
+  if (!Number.isFinite(merged.intrusionLevel)) merged.intrusionLevel = 0;
+  if (!Number.isFinite(merged.fearStage)) merged.fearStage = 0;
+  if (!Number.isFinite(merged.refreshStreak)) merged.refreshStreak = 0;
+  if (!Number.isFinite(merged.watchRecoveryStreak)) merged.watchRecoveryStreak = 0;
+  if (typeof merged.lastRefreshPage !== 'string') merged.lastRefreshPage = '';
+  if (typeof merged.lastSafePage !== 'string') merged.lastSafePage = 'home';
+  if (!['all', 'resident', 'management', 'deleted', 'external'].includes(merged.boardFilter)) merged.boardFilter = 'all';
+  if (!['newest', 'oldest'].includes(merged.boardSort)) merged.boardSort = 'newest';
+  // A reload during a simulated error screen must never leave the game visually locked.
+  merged.activeScreenEvent = null;
   return merged;
 }
 

@@ -5,6 +5,7 @@
   pointer-events: none;
   opacity: 0;
   background:
+    url('../../public/images/crt-noise-overlay.png') center / cover,
     repeating-linear-gradient(0deg, rgba(78, 74, 74, 0.09) 0 1px, transparent 1px 4px),
     linear-gradient(90deg, rgba(115, 0, 0, 0.05), transparent 45%, rgba(0, 15, 35, 0.09));
   mix-blend-mode: multiply;
@@ -51,6 +52,16 @@
   cursor: crosshair !important;
 }
 
+.effects-reduced .horror-layer {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+.effects-reduced .event-flicker,
+.effects-reduced .counter-haunt {
+  animation: none !important;
+}
+
 @keyframes scan-drift {
   0%,
   100% {
@@ -91,6 +102,398 @@
   .horror-layer,
   .event-flicker,
   .counter-haunt {
+    animation: none;
+  }
+}
+
+/* High-intensity events stay inside the fake browser content area. */
+.horror-event-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.horror-event-hint,
+.cascade-intro {
+  position: absolute;
+  z-index: 2;
+  padding: 5px 8px;
+  border: 1px solid rgba(38, 61, 83, 0.72);
+  background: rgba(245, 245, 238, 0.9);
+  color: #273b4a;
+  font: 11px/1.4 var(--font-pixel);
+}
+
+.cascade-intro {
+  top: 12px;
+  left: 14px;
+  max-width: calc(100% - 28px);
+}
+
+.horror-event-hint {
+  right: 12px;
+  bottom: 10px;
+}
+
+.cascade-window {
+  position: absolute;
+  top: calc(72px + (var(--cascade-index) * 16px));
+  left: calc(22px + (var(--cascade-index) * 42px));
+  z-index: calc(5 + var(--cascade-index));
+  width: min(342px, calc(100% - 42px));
+  border: 1px solid #0c3d7f;
+  border-radius: 4px 4px 0 0;
+  background: #eef1f4;
+  box-shadow: 4px 5px 0 rgba(12, 33, 57, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.55) inset;
+  opacity: 0;
+  animation: cascade-window-in 180ms steps(2, end) forwards;
+  animation-delay: calc(var(--cascade-index) * 160ms);
+}
+
+.cascade-window .drawer-title {
+  min-height: 25px;
+}
+
+.cascade-window__body {
+  min-height: 116px;
+  padding: 12px 14px;
+  background: #f4f4f4;
+  color: #232323;
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+.cascade-window__body p {
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+.cascade-window__icon {
+  float: left;
+  width: 22px;
+  height: 22px;
+  margin: 0 10px 7px 0;
+  border-radius: 50%;
+  background: #b62e25;
+  color: #fff;
+  font: bold 17px/22px Arial, sans-serif;
+  text-align: center;
+}
+
+.horror-event-layer--bsod {
+  display: grid;
+  place-items: center;
+  background: rgba(0, 16, 92, 0.95);
+  color: #fff;
+}
+
+.system-screen {
+  width: min(680px, calc(100% - 42px));
+  padding: 26px 30px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.28);
+  font-family: 'Courier New', monospace;
+}
+
+.system-screen--blue {
+  background: #071f9a;
+  color: #f4f7ff;
+}
+
+.system-screen--red {
+  position: relative;
+  overflow: hidden;
+  background: #630d16;
+  color: #fff4f4;
+}
+
+.system-screen h2 {
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: bold 19px/1.35 'Courier New', monospace;
+}
+
+.system-screen p {
+  line-height: 1.55;
+}
+
+.system-screen__eyebrow {
+  margin: 0 0 20px;
+  font-size: 11px;
+  opacity: 0.84;
+}
+
+.system-screen__code {
+  color: #fff6a9;
+  font-weight: bold;
+}
+
+.system-screen__hint {
+  margin: 20px 0 14px;
+  color: rgba(255, 255, 255, 0.78);
+  font: 11px/1.55 var(--font-pixel);
+}
+
+.fake-progress {
+  margin: 18px 0 5px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  font: 11px/1.2 var(--font-pixel);
+}
+
+.fake-progress span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.fake-progress i {
+  display: block;
+  width: 13%;
+  height: 8px;
+  background: #c7d7ff;
+  animation: fake-progress-jump 2.3s steps(2, end) forwards;
+}
+
+.screen-button {
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: #d7e5ff;
+  color: #12245e;
+  font: 12px var(--font-pixel);
+}
+
+.screen-button:hover,
+.screen-button:focus-visible {
+  background: #fff;
+}
+
+.screen-button--plain {
+  background: transparent;
+  color: #fff;
+}
+
+.screen-button--danger {
+  border-color: #ffd4d4;
+  background: #9c2630;
+  color: #fff;
+}
+
+.horror-event-layer--red {
+  display: grid;
+  place-items: center;
+  background: rgba(17, 0, 4, 0.96);
+}
+
+.red-eye-mark,
+.watch-eyes {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  pointer-events: none;
+}
+
+.red-eye-mark {
+  position: absolute;
+  top: 54px;
+  right: 48px;
+  opacity: 0.55;
+}
+
+.red-eye-mark span,
+.watch-eyes span {
+  display: block;
+  width: 28px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: 0 0 11px currentColor;
+}
+
+.red-eye-mark span::after,
+.watch-eyes span::after {
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin: 3px auto;
+  border-radius: 50%;
+  background: currentColor;
+  content: '';
+}
+
+.horror-event-layer--watch {
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(rgba(10, 0, 0, 0.72), rgba(45, 0, 5, 0.88)),
+    repeating-linear-gradient(0deg, rgba(214, 15, 34, 0.11) 0 1px, transparent 1px 4px),
+    #020203;
+  color: #cdbcb4;
+}
+
+.watch-corruption {
+  position: relative;
+  width: min(650px, calc(100% - 42px));
+  min-height: 270px;
+  padding: 28px 30px 24px;
+  border: 1px solid #631f25;
+  background: rgba(4, 4, 5, 0.84);
+  box-shadow: 0 0 22px rgba(146, 0, 17, 0.65), inset 0 0 0 1px rgba(235, 41, 49, 0.12);
+  text-align: center;
+}
+
+.watch-eyes {
+  position: absolute;
+  top: 18px;
+  right: 30px;
+  color: #c91f2a;
+  opacity: 0.78;
+}
+
+.watch-corruption__path {
+  margin: 0 0 28px;
+  color: #83353b;
+  font-size: 11px;
+}
+
+.watch-corruption h2 {
+  margin: 0 0 14px;
+  color: #d52735;
+  font: bold 22px/1.35 var(--font-pixel-heading);
+  letter-spacing: 0.1em;
+}
+
+.watch-corruption__message {
+  margin: 22px 0 16px;
+  color: #e7d2c8;
+}
+
+.watch-corruption__counter {
+  color: #9f7675;
+  font-size: 11px;
+}
+
+.button-row--center {
+  justify-content: center;
+}
+
+@keyframes cascade-window-in {
+  from {
+    opacity: 0;
+    transform: translate(14px, -8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes fake-progress-jump {
+  0%,
+  78% {
+    width: 13%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.effects-reduced .cascade-window,
+.effects-reduced .fake-progress i,
+.effects-reduced .watch-eyes,
+.effects-reduced .red-eye-mark {
+  animation: none !important;
+}
+
+.effects-reduced .cascade-window {
+  opacity: 1;
+}
+
+.effects-reduced .fake-progress i {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cascade-window,
+  .fake-progress i {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Newly supplied pixel-art warning, progress and corrupted-document assets. */
+.cascade-window__icon {
+  border-radius: 0;
+  background: url('../../public/images/system-alert-glyphs.png') -22px center / 66px 22px no-repeat;
+  image-rendering: pixelated;
+}
+
+.system-screen {
+  position: relative;
+}
+
+.system-screen__glyph {
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: -3px 0 5px auto;
+  background-image: url('../../public/images/system-alert-glyphs.png');
+  background-repeat: no-repeat;
+  background-size: 78px 26px;
+  image-rendering: pixelated;
+}
+
+.system-screen__glyph--blue { background-position: -26px 0; }
+.system-screen__glyph--red { background-position: -52px 0; }
+
+.fake-progress i {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  background: url('../../public/images/recovery-progress-bar.png') center / 100% 100% no-repeat;
+  animation: none;
+}
+
+.fake-progress i::after {
+  position: absolute;
+  inset: 0 87% 0 0;
+  background: rgba(4, 13, 26, 0.64);
+  content: '';
+  animation: fake-progress-cover 2.3s steps(2, end) forwards;
+}
+
+.watch-corruption__icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 8px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: saturate(0.72) contrast(1.15);
+}
+
+@keyframes fake-progress-cover {
+  0%,
+  78% {
+    right: 87%;
+  }
+  100% {
+    right: 0;
+  }
+}
+
+.effects-reduced .fake-progress i::after {
+  right: 0;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fake-progress i::after {
+    right: 0;
     animation: none;
   }
 }

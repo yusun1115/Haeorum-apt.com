@@ -1,6 +1,20 @@
+@font-face {
+  font-family: 'Galmuri9';
+  src: url('../fonts/Galmuri9.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('../fonts/Galmuri11.ttf') format('truetype');
+  font-display: swap;
+}
+
 :root {
+  --font-pixel: 'Galmuri9', 'Courier New', monospace;
+  --font-pixel-heading: 'Galmuri11', 'Galmuri9', 'Courier New', monospace;
   color-scheme: light;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-pixel);
   background: #101822;
   color: #1d2935;
   font-synthesis: none;
@@ -27,6 +41,7 @@ body {
 button,
 input {
   font: inherit;
+  font-family: var(--font-pixel);
 }
 
 button {
