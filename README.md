@@ -2,18 +2,43 @@
 
 해오름아파트 입주민 홈페이지를 수리하는 동안, 오래된 웹사이트의 기록과 방문자 세션을 추적하는 아날로그 호러 웹게임입니다.
 
-## 실행
+## 바로 플레이
+
+**[게임 시작 — 404: 존재하지 않는 방문자](https://yusun1115.github.io/Haeorum-apt.com/)**
+
+설치 없이 브라우저에서 플레이할 수 있습니다. 데스크톱 Chrome 또는 Edge, 1024×768 이상의 화면을 권장합니다.
+
+## 로컬 실행
 
 별도 빌드 도구나 백엔드가 필요하지 않습니다. Windows에서는 프로젝트 폴더에서 다음 명령을 실행합니다.
 
 ```powershell
-cd C:\Users\admin\Desktop\0929
 py -m http.server 4173
 ```
 
 그 다음 브라우저에서 [http://localhost:4173/](http://localhost:4173/)을 엽니다.
 
-정적 배포 시 프로젝트 폴더 전체를 그대로 호스팅하면 됩니다. `index.html`에서 상대 경로로 HTML, JavaScript, CSS, 이미지, 폰트를 로드합니다.
+## 배포용 빌드
+
+Node.js 22 이상에서 다음 명령을 실행합니다. 외부 패키지 설치는 필요하지 않습니다.
+
+```sh
+node scripts/build.mjs
+```
+
+`npm run build`도 같은 빌드를 실행합니다. 생성된 `dist/`에 게임 실행에 필요한 HTML, JavaScript, CSS, 이미지, 폰트만 포함됩니다. 모든 리소스의 상대 경로를 유지하므로 GitHub Pages의 `/Haeorum-apt.com/` 경로에서도 실행됩니다.
+
+빌드 결과를 로컬에서 확인하려면 다음 명령을 실행한 뒤 [http://localhost:4173/](http://localhost:4173/)을 엽니다.
+
+```powershell
+py -m http.server 4173 --directory dist
+```
+
+## GitHub Pages 자동 배포
+
+`.github/workflows/deploy-pages.yml`은 `main` 브랜치에 푸시할 때 게임을 빌드하고 `dist/`를 GitHub Pages에 배포합니다. GitHub의 Actions 탭에서 수동으로 실행할 수도 있습니다.
+
+저장소의 **Settings → Pages → Build and deployment → Source**는 **GitHub Actions**로 설정합니다. 배포 진행 상태는 [GitHub Actions](https://github.com/yusun1115/Haeorum-apt.com/actions/workflows/deploy-pages.yml)에서 확인할 수 있습니다.
 
 ## 조작
 
